@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
+import { TodoItems } from './components/TodoItems';
+import { AddTodoForm} from './components/AddTodoForm';
+import { EditForm } from './components/EditForm';
 
 export const App = () => {
 	const [todos, setTodos] = useState(() => {
@@ -75,43 +78,24 @@ export const App = () => {
 		<div className='App'>
 			<h1>Todo App</h1>
 			{isEditing ? (
-				<form onSubmit={handleEditFormSubmit}>
-					<h2>Edit Todo</h2>
-					<label htmlFor='editTodo'>Edit todo: </label>
-					<input
-						name="editTodo"
-						type="text"
-						placeholder='Edit todo'
-						value={currentTodo.text}
-						onChange={handleEditInputChange}
-					/>
-					<button type="submit" onClick={handleEditFormSubmit}>Update</button>
-					<button onClick={() => setIsEditing(false)}>Cancel</button>
-				</form>
+				<EditForm
+					handleEditFormSubmit={handleEditFormSubmit}
+					currentTodo={currentTodo}
+					handleEditInputChange={handleEditInputChange}
+					setIsEditing={setIsEditing}
+				/>
 			) : (
-				<form onSubmit={handleFormSubmit}>
-					<h2>Add Todo</h2>
-					<input
-						name='todo'
-						type='text'
-						placeholder="Create a new todo"
-						value={todo}
-						onChange={handleInputChange}
-					/>
-				</form>
+				<AddTodoForm
+					todo={todo}
+					handleFormSubmit={handleFormSubmit}
+					handleInputChange={handleInputChange}
+				/>
 			)}
-
-			<ul className='todo-list'>
-				{todos.map((todo) => {
-					return (
-						<li key={todo.id}>
-							{todo.text}
-							<button onClick={() => {handleEditClick(todo)}}>Edit</button>
-							<button onClick={() => {handleDeleteClick(todo.id)}}>X</button>
-						</li>
-					)
-				})}
-			</ul>
+			<TodoItems
+				todos={todos}
+				handleEditClick={handleEditClick}
+				handleDeleteClick={handleDeleteClick}
+			/>
 		</div>
 	)
 };
